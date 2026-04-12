@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { skillListings, skillCategories } from '@/lib/data';
-import { MapPin, Star } from 'lucide-react';
+import { MapPin, Star, ShoppingCart } from 'lucide-react';
+import { toast } from 'sonner';
 
 const BrowseSkillsPage = () => {
-  const { currentUser, setPage, setAuthMode, selectSkillForPayment } = useAppStore();
+  const { currentUser, setPage, setAuthMode, selectSkillForPayment, addToCart } = useAppStore();
   const [activeCategory, setActiveCategory] = useState('All');
   const [search, setSearch] = useState('');
 
@@ -21,6 +22,25 @@ const BrowseSkillsPage = () => {
       return;
     }
     selectSkillForPayment({ name: listing.skill, seller: listing.name, price: listing.priceNum, initials: listing.initials, color: listing.color });
+  };
+
+  const handleAddToCart = (e: React.MouseEvent, listing: typeof skillListings[0]) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      setAuthMode('signup');
+      setPage('auth');
+      return;
+    }
+    addToCart({
+      id: listing.id,
+      name: listing.skill,
+      seller: listing.name,
+      price: listing.priceNum,
+      initials: listing.initials,
+      color: listing.color,
+      type: 'skill',
+    });
+    toast(`${listing.skill} added to cart`);
   };
 
   return (
@@ -83,8 +103,17 @@ const BrowseSkillsPage = () => {
             </div>
             <div className="flex items-center justify-between pt-3 border-t border-border">
               <div className="font-display font-bold text-accent">{l.price}</div>
-              <div className="text-sm text-text2 flex items-center gap-1">
-                <Star size={12} className="text-yellow-400 fill-yellow-400" /> {l.rating} ({l.reviews})
+              <div className="flex items-center gap-2">
+                <div className="text-sm text-text2 flex items-center gap-1">
+                  <Star size={12} className="text-yellow-400 fill-yellow-400" /> {l.rating} ({l.reviews})
+                </div>
+                <button
+                  onClick={(e) => handleAddToCart(e, l)}
+                  className="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground p-1.5 rounded-sm transition-all"
+                  title="Add to cart"
+                >
+                  <ShoppingCart size={14} />
+                </button>
               </div>
             </div>
           </div>

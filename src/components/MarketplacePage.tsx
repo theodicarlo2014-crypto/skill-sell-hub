@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { productListings, productCategories } from '@/lib/data';
-import { MapPin, Clock, Tag } from 'lucide-react';
+import { MapPin, Clock, Tag, ShoppingCart } from 'lucide-react';
+import { toast } from 'sonner';
 
 const MarketplacePage = () => {
-  const { currentUser, setPage, setAuthMode, selectProductForPayment } = useAppStore();
+  const { currentUser, setPage, setAuthMode, selectProductForPayment, addToCart } = useAppStore();
   const [activeCategory, setActiveCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('newest');
@@ -25,6 +26,25 @@ const MarketplacePage = () => {
       return;
     }
     selectProductForPayment({ title: p.title, seller: p.seller, price: p.price, initials: p.sellerInitials, color: p.sellerColor });
+  };
+
+  const handleAddToCart = (e: React.MouseEvent, p: typeof productListings[0]) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      setAuthMode('signup');
+      setPage('auth');
+      return;
+    }
+    addToCart({
+      id: p.id,
+      name: p.title,
+      seller: p.seller,
+      price: p.price,
+      initials: p.sellerInitials,
+      color: p.sellerColor,
+      type: 'product',
+    });
+    toast(`${p.title} added to cart`);
   };
 
   return (
@@ -98,10 +118,19 @@ const MarketplacePage = () => {
                   </div>
                   <span className="text-xs text-text2">{p.seller}</span>
                 </div>
-                <span className="flex items-center gap-1 text-xs">
-                  <Tag size={10} className="text-text3" />
-                  <span className={`${p.condition === 'New' ? 'text-green' : 'text-text2'}`}>{p.condition}</span>
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="flex items-center gap-1 text-xs">
+                    <Tag size={10} className="text-text3" />
+                    <span className={`${p.condition === 'New' ? 'text-green' : 'text-text2'}`}>{p.condition}</span>
+                  </span>
+                  <button
+                    onClick={(e) => handleAddToCart(e, p)}
+                    className="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground p-1.5 rounded-sm transition-all"
+                    title="Add to cart"
+                  >
+                    <ShoppingCart size={14} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
