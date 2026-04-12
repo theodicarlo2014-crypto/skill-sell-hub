@@ -46,9 +46,19 @@ const Navbar = () => {
           )}
         </div>
 
-        <button className="md:hidden border border-border rounded-sm p-2 text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button onClick={() => navigate('cart')} className="relative text-text2 hover:text-foreground transition-colors p-2">
+            <ShoppingCart size={18} />
+            {cart.length > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-accent text-primary-foreground text-[10px] font-bold min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center">
+                {cart.length}
+              </span>
+            )}
+          </button>
+          <button className="border border-border rounded-sm p-2 text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </nav>
 
       {mobileOpen && (
