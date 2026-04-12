@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { productListings, productCategories } from '@/lib/data';
-import { MapPin, Clock, Tag } from 'lucide-react';
+import { MapPin, Clock, Tag, ShoppingCart } from 'lucide-react';
+import { toast } from 'sonner';
 
 const MarketplacePage = () => {
-  const { currentUser, setPage, setAuthMode, selectProductForPayment } = useAppStore();
+  const { currentUser, setPage, setAuthMode, selectProductForPayment, addToCart } = useAppStore();
   const [activeCategory, setActiveCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('newest');
@@ -25,6 +26,25 @@ const MarketplacePage = () => {
       return;
     }
     selectProductForPayment({ title: p.title, seller: p.seller, price: p.price, initials: p.sellerInitials, color: p.sellerColor });
+  };
+
+  const handleAddToCart = (e: React.MouseEvent, p: typeof productListings[0]) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      setAuthMode('signup');
+      setPage('auth');
+      return;
+    }
+    addToCart({
+      id: p.id,
+      name: p.title,
+      seller: p.seller,
+      price: p.price,
+      initials: p.sellerInitials,
+      color: p.sellerColor,
+      type: 'product',
+    });
+    toast(`${p.title} added to cart`);
   };
 
   return (

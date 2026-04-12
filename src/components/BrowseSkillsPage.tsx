@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { skillListings, skillCategories } from '@/lib/data';
-import { MapPin, Star } from 'lucide-react';
+import { MapPin, Star, ShoppingCart } from 'lucide-react';
+import { toast } from 'sonner';
 
 const BrowseSkillsPage = () => {
-  const { currentUser, setPage, setAuthMode, selectSkillForPayment } = useAppStore();
+  const { currentUser, setPage, setAuthMode, selectSkillForPayment, addToCart } = useAppStore();
   const [activeCategory, setActiveCategory] = useState('All');
   const [search, setSearch] = useState('');
 
@@ -21,6 +22,25 @@ const BrowseSkillsPage = () => {
       return;
     }
     selectSkillForPayment({ name: listing.skill, seller: listing.name, price: listing.priceNum, initials: listing.initials, color: listing.color });
+  };
+
+  const handleAddToCart = (e: React.MouseEvent, listing: typeof skillListings[0]) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      setAuthMode('signup');
+      setPage('auth');
+      return;
+    }
+    addToCart({
+      id: listing.id,
+      name: listing.skill,
+      seller: listing.name,
+      price: listing.priceNum,
+      initials: listing.initials,
+      color: listing.color,
+      type: 'skill',
+    });
+    toast(`${listing.skill} added to cart`);
   };
 
   return (
