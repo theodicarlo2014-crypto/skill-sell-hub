@@ -103,8 +103,17 @@ const BrowseSkillsPage = () => {
             </div>
             <div className="flex items-center justify-between pt-3 border-t border-border">
               <div className="font-display font-bold text-accent">{l.price}</div>
-              <div className="text-sm text-text2 flex items-center gap-1">
-                <Star size={12} className="text-yellow-400 fill-yellow-400" /> {l.rating} ({l.reviews})
+              <div className="flex items-center gap-2">
+                <div className="text-sm text-text2 flex items-center gap-1">
+                  <Star size={12} className="text-yellow-400 fill-yellow-400" /> {l.rating} ({l.reviews})
+                </div>
+                <button
+                  onClick={(e) => handleAddToCart(e, l)}
+                  className="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground p-1.5 rounded-sm transition-all"
+                  title="Add to cart"
+                >
+                  <ShoppingCart size={14} />
+                </button>
               </div>
             </div>
           </div>

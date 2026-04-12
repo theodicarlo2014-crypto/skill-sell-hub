@@ -118,10 +118,19 @@ const MarketplacePage = () => {
                   </div>
                   <span className="text-xs text-text2">{p.seller}</span>
                 </div>
-                <span className="flex items-center gap-1 text-xs">
-                  <Tag size={10} className="text-text3" />
-                  <span className={`${p.condition === 'New' ? 'text-green' : 'text-text2'}`}>{p.condition}</span>
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="flex items-center gap-1 text-xs">
+                    <Tag size={10} className="text-text3" />
+                    <span className={`${p.condition === 'New' ? 'text-green' : 'text-text2'}`}>{p.condition}</span>
+                  </span>
+                  <button
+                    onClick={(e) => handleAddToCart(e, p)}
+                    className="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground p-1.5 rounded-sm transition-all"
+                    title="Add to cart"
+                  >
+                    <ShoppingCart size={14} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
