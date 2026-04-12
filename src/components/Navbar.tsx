@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShoppingCart } from 'lucide-react';
 
 const Navbar = () => {
-  const { currentUser, setPage, setAuthMode, logout } = useAppStore();
+  const { currentUser, setPage, setAuthMode, logout, cart } = useAppStore();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navigate = (page: string) => {
@@ -24,7 +24,15 @@ const Navbar = () => {
           <button onClick={() => navigate('browse')} className="text-text2 text-sm hover:text-foreground transition-colors">How it works</button>
         </div>
 
-        <div className="hidden md:flex gap-3">
+        <div className="hidden md:flex gap-3 items-center">
+          <button onClick={() => navigate('cart')} className="relative text-text2 hover:text-foreground transition-colors p-2">
+            <ShoppingCart size={20} />
+            {cart.length > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-accent text-primary-foreground text-[10px] font-bold w-4.5 h-4.5 min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center">
+                {cart.length}
+              </span>
+            )}
+          </button>
           {currentUser ? (
             <>
               <span className="text-sm text-text2 self-center">Hi, {currentUser.name.split(' ')[0]}</span>

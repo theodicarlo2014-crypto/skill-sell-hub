@@ -6,6 +6,7 @@ import MarketplacePage from '@/components/MarketplacePage';
 import AuthPage from '@/components/AuthPage';
 import DashboardPage from '@/components/DashboardPage';
 import PaymentPage from '@/components/PaymentPage';
+import CartPage from '@/components/CartPage';
 
 const Index = () => {
   const { activePage } = useAppStore();
@@ -20,6 +21,7 @@ const Index = () => {
         {activePage === 'auth' && <AuthPage />}
         {activePage === 'dashboard' && <DashboardPage />}
         {activePage === 'payment' && <PaymentPage />}
+        {activePage === 'cart' && <CartPage />}
       </div>
     </div>
   );
