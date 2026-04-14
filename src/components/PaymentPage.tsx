@@ -26,7 +26,7 @@ const PaymentPage = () => {
     );
   }
 
-  const fee = +(item.price * 0.12).toFixed(2);
+  const fee = +(item.price * 0.15).toFixed(2);
   const total = +(item.price + fee).toFixed(2);
 
   const handlePayment = () => {
@@ -46,7 +46,7 @@ const PaymentPage = () => {
         </div>
         <h2 className="font-display text-3xl font-bold mb-2">Payment confirmed!</h2>
         <p className="text-text2 max-w-xs leading-relaxed mb-1">Your booking is locked in. The seller will reach out within 24 hours.</p>
-        <p className="text-xs text-text3 mb-8">A receipt has been sent to your email. SkillSwap's 12% platform fee has been collected.</p>
+        <p className="text-xs text-text3 mb-8">A receipt has been sent to your email. SkillSwap's 15% platform fee has been collected.</p>
         <button onClick={() => setPage('dashboard')} className="bg-primary text-primary-foreground px-8 py-3 rounded-sm font-medium">Go to dashboard</button>
       </div>
     );
@@ -138,9 +138,9 @@ const PaymentPage = () => {
             </div>
           </div>
           <div className="flex justify-between text-sm mb-2.5"><span className="text-text2">Base price</span><span>${item.price.toFixed(2)}</span></div>
-          <div className="flex justify-between text-sm mb-2.5"><span className="text-text2">Platform fee (12%)</span><span>+${fee.toFixed(2)}</span></div>
+          <div className="flex justify-between text-sm mb-2.5"><span className="text-text2">Platform fee (15%)</span><span>+${fee.toFixed(2)}</span></div>
           <div className="flex justify-between text-base font-semibold pt-3 border-t border-border mt-2"><span>Total</span><span>${total.toFixed(2)}</span></div>
-          <p className="text-xs text-text3 mt-3 leading-relaxed">SkillSwap charges a <strong className="text-green">12% platform fee</strong> to cover secure payments, dispute resolution, and support.</p>
+          <p className="text-xs text-text3 mt-3 leading-relaxed">SkillSwap charges a <strong className="text-green">15% platform fee</strong> to cover secure payments, dispute resolution, and support.</p>
         </div>
       </div>
     </div>
