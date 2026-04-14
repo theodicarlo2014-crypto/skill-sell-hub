@@ -17,7 +17,7 @@ const CartPage = () => {
         <p className="text-text2 max-w-xs leading-relaxed mb-8">Browse local skills or products to add items to your cart.</p>
         <div className="flex gap-3">
           <button onClick={() => setPage('browse')} className="bg-primary text-primary-foreground px-8 py-3 rounded-sm font-medium">Browse Skills</button>
-          <button onClick={() => setPage('marketplace')} className="border border-border text-text2 px-8 py-3 rounded-sm font-medium hover:bg-surface2 transition-colors">Marketplace</button>
+          
         </div>
       </div>
     );
@@ -166,7 +166,7 @@ const CartPage = () => {
           <div className="flex justify-between text-sm mb-2.5"><span className="text-text2">Subtotal ({cart.length} items)</span><span>${subtotal.toFixed(2)}</span></div>
           <div className="flex justify-between text-sm mb-2.5"><span className="text-text2">Platform fee (15%)</span><span>+${fee.toFixed(2)}</span></div>
           <div className="flex justify-between text-base font-semibold pt-3 border-t border-border mt-2"><span>Total</span><span>${total.toFixed(2)}</span></div>
-          <p className="text-xs text-text3 mt-3 leading-relaxed">SkillSwap charges a <strong className="text-green">15% platform fee</strong> to cover secure payments, dispute resolution, and support.</p>
+          <p className="text-xs text-text3 mt-3 leading-relaxed">SkillSwap charges a <strong className="text-green">15% platform fee</strong> to buyers. <strong>Sellers receive 100% of their listed price</strong> — the fee is added on top, not deducted.</p>
         </div>
       </div>
     </div>
