@@ -36,8 +36,8 @@ const AuthPage = () => {
 
         {!isLogin && (
           <div className="grid grid-cols-2 bg-surface2 rounded-sm p-1 mb-6 gap-1">
-            <button onClick={() => setUserRole('buyer')} className={`py-2.5 rounded-md text-sm font-medium transition-all ${userRole === 'buyer' ? 'bg-surface text-foreground border border-border' : 'text-text2'}`}>I need a skill</button>
-            <button onClick={() => setUserRole('seller')} className={`py-2.5 rounded-md text-sm font-medium transition-all ${userRole === 'seller' ? 'bg-surface text-foreground border border-border' : 'text-text2'}`}>I have a skill</button>
+            <button onClick={() => setUserRole('buyer')} className={`py-2.5 rounded-md text-sm font-medium transition-all ${userRole === 'buyer' ? 'bg-surface text-foreground border border-border' : 'text-text2'}`}>🛒 Sign up as Buyer</button>
+            <button onClick={() => setUserRole('seller')} className={`py-2.5 rounded-md text-sm font-medium transition-all ${userRole === 'seller' ? 'bg-surface text-foreground border border-border' : 'text-text2'}`}>💼 Sign up as Seller</button>
           </div>
         )}
 
