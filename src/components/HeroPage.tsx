@@ -1,4 +1,5 @@
 import { useAppStore } from '@/lib/store';
+import ShareButton from './ShareButton';
 
 const HeroPage = () => {
   const { setPage, setAuthMode } = useAppStore();
@@ -27,6 +28,10 @@ const HeroPage = () => {
         <button onClick={() => setPage('marketplace')} className="border border-border bg-transparent text-foreground px-8 py-3.5 rounded-sm text-base hover:bg-surface2 transition-all">
           Browse marketplace
         </button>
+      </div>
+
+      <div className="mt-6 animate-fade-in" style={{ animationDelay: '0.35s' }}>
+        <ShareButton />
       </div>
 
       <div className="flex gap-12 mt-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
