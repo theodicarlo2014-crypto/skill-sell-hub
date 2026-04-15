@@ -28,7 +28,7 @@ const HeroPage = () => {
         <button onClick={() => setPage('marketplace')} className="border border-border bg-transparent text-foreground px-8 py-3.5 rounded-sm text-base hover:bg-surface2 transition-all">
           Browse marketplace
         </button>
-        <button onClick={() => { setAuthMode('register'); setPage('auth'); }} className="bg-accent text-accent-foreground px-8 py-3.5 rounded-sm text-base font-medium hover:opacity-90 hover:-translate-y-0.5 transition-all">
+        <button onClick={() => { setAuthMode('signup'); setPage('auth'); }} className="bg-accent text-accent-foreground px-8 py-3.5 rounded-sm text-base font-medium hover:opacity-90 hover:-translate-y-0.5 transition-all">
           Sign up as a seller
         </button>
       </div>
