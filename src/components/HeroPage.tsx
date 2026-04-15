@@ -17,12 +17,15 @@ const HeroPage = () => {
       </h1>
 
       <p className="text-text2 text-lg max-w-[520px] leading-relaxed mb-10 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-        SkillSwap connects people who need everyday skills — tutoring, design, repairs, coaching — with talented locals.
+        SkillSwap connects people who need everyday skills — tutoring, design, repairs, coaching — with talented locals. Plus buy & sell products in our marketplace.
       </p>
 
       <div className="flex gap-4 flex-wrap justify-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
         <button onClick={() => setPage('browse')} className="bg-primary text-primary-foreground px-8 py-3.5 rounded-sm text-base font-medium hover:bg-accent hover:-translate-y-0.5 hover:shadow-[0_8px_24px_hsl(var(--accent-glow))] transition-all">
           Find a skill near you
+        </button>
+        <button onClick={() => setPage('marketplace')} className="border border-border bg-transparent text-foreground px-8 py-3.5 rounded-sm text-base hover:bg-surface2 transition-all">
+          Browse marketplace
         </button>
       </div>
 

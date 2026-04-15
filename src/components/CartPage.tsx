@@ -17,7 +17,7 @@ const CartPage = () => {
         <p className="text-text2 max-w-xs leading-relaxed mb-8">Browse local skills or products to add items to your cart.</p>
         <div className="flex gap-3">
           <button onClick={() => setPage('browse')} className="bg-primary text-primary-foreground px-8 py-3 rounded-sm font-medium">Browse Skills</button>
-          
+          <button onClick={() => setPage('marketplace')} className="border border-border text-text2 px-8 py-3 rounded-sm font-medium hover:bg-surface2 transition-colors">Marketplace</button>
         </div>
       </div>
     );

@@ -46,7 +46,7 @@ const DashboardPage = () => {
         <div className="text-sm mb-4">{isSeller ? 'Create your first listing and start getting bookings.' : 'Browse local skills or products and make your first purchase.'}</div>
         <div className="flex gap-3 justify-center flex-wrap">
           <button onClick={() => setPage('browse')} className="bg-primary text-primary-foreground px-6 py-2.5 rounded-sm font-medium hover:bg-accent transition-all">Browse skills</button>
-          
+          <button onClick={() => setPage('marketplace')} className="border border-border text-text2 px-6 py-2.5 rounded-sm hover:bg-surface2 transition-all">Marketplace</button>
         </div>
       </div>
 
