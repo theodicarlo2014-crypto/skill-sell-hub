@@ -71,7 +71,7 @@ const Navbar = () => {
             {currentUser ? (
               <>
                 <button onClick={() => navigate('dashboard')} className="bg-primary text-primary-foreground py-3 rounded-sm font-medium">Dashboard</button>
-                <button onClick={() => { logout(); setMobileOpen(false); }} className="border border-border text-text2 py-3 rounded-sm">Sign out</button>
+                <button onClick={async () => { await supabase.auth.signOut(); setMobileOpen(false); }} className="border border-border text-text2 py-3 rounded-sm">Sign out</button>
               </>
             ) : (
               <>
