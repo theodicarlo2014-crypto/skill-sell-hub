@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '@/lib/store';
+import { supabase } from '@/integrations/supabase/client';
 import { Menu, X, ShoppingCart } from 'lucide-react';
 
 const Navbar = () => {
