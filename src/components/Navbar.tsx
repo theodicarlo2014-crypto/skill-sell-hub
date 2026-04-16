@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Menu, X, ShoppingCart } from 'lucide-react';
 
 const Navbar = () => {
-  const { currentUser, setPage, setAuthMode, logout, cart } = useAppStore();
+  const { currentUser, setPage, setAuthMode, cart } = useAppStore();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navigate = (page: string) => {
