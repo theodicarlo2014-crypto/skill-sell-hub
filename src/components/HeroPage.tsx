@@ -39,16 +39,16 @@ const HeroPage = () => {
 
       <div className="flex gap-12 mt-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
         <div className="text-center">
-          <div className="font-display text-3xl font-bold">18 cities</div>
-          <div className="text-xs text-text3 mt-0.5">and growing</div>
-        </div>
-        <div className="text-center">
           <div className="font-display text-3xl font-bold">$0</div>
           <div className="text-xs text-text3 mt-0.5">to join</div>
         </div>
         <div className="text-center">
-          <div className="font-display text-3xl font-bold">5K+</div>
-          <div className="text-xs text-text3 mt-0.5">skills offered</div>
+          <div className="font-display text-3xl font-bold">15%</div>
+          <div className="text-xs text-text3 mt-0.5">platform fee</div>
+        </div>
+        <div className="text-center">
+          <div className="font-display text-3xl font-bold">100%</div>
+          <div className="text-xs text-text3 mt-0.5">to sellers</div>
         </div>
       </div>
     </div>
