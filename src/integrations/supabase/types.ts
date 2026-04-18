@@ -14,6 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
+      listings: {
+        Row: {
+          category: string
+          condition: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image: string | null
+          is_active: boolean
+          location: string | null
+          price: number
+          seller_id: string
+          tags: string[] | null
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          condition?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          is_active?: boolean
+          location?: string | null
+          price: number
+          seller_id: string
+          tags?: string[] | null
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          condition?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image?: string | null
+          is_active?: boolean
+          location?: string | null
+          price?: number
+          seller_id?: string
+          tags?: string[] | null
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          amount: number
+          buyer_id: string
+          created_at: string
+          id: string
+          listing_id: string
+          platform_fee: number
+          status: string
+          stripe_session_id: string | null
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          buyer_id: string
+          created_at?: string
+          id?: string
+          listing_id: string
+          platform_fee: number
+          status?: string
+          stripe_session_id?: string | null
+          total: number
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          buyer_id?: string
+          created_at?: string
+          id?: string
+          listing_id?: string
+          platform_fee?: number
+          status?: string
+          stripe_session_id?: string | null
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null

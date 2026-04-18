@@ -22,7 +22,7 @@ const Navbar = () => {
         <div className="hidden md:flex gap-8">
           <button onClick={() => navigate('browse')} className="text-text2 text-sm hover:text-foreground transition-colors">Browse Skills</button>
           <button onClick={() => navigate('marketplace')} className="text-text2 text-sm hover:text-foreground transition-colors">Marketplace</button>
-          <button onClick={() => navigate('browse')} className="text-text2 text-sm hover:text-foreground transition-colors">How it works</button>
+          {currentUser && <button onClick={() => navigate('create-listing')} className="text-text2 text-sm hover:text-foreground transition-colors">Sell</button>}
         </div>
 
         <div className="hidden md:flex gap-3 items-center">
@@ -66,7 +66,7 @@ const Navbar = () => {
         <div className="fixed top-[62px] left-0 right-0 z-40 bg-background/97 backdrop-blur-xl border-b border-border p-5 flex flex-col md:hidden">
           <button onClick={() => navigate('browse')} className="text-text2 py-3 border-b border-border text-left">Browse Skills</button>
           <button onClick={() => navigate('marketplace')} className="text-text2 py-3 border-b border-border text-left">Marketplace</button>
-          <button onClick={() => navigate('browse')} className="text-text2 py-3 text-left">How it works</button>
+          {currentUser && <button onClick={() => navigate('create-listing')} className="text-text2 py-3 text-left">Sell</button>}
           <div className="flex flex-col gap-2 pt-4">
             {currentUser ? (
               <>

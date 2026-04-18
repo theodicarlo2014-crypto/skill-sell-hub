@@ -13,7 +13,7 @@ const AuthPage = () => {
   const isLogin = authMode === 'login';
 
   const handleSubmit = async () => {
-    if (!email || !password) { toast('Please enter email and password'); return; }
+    if (!email || !password) { toast.error('Please enter email and password'); return; }
     setLoading(true);
     try {
       if (isLogin) {
