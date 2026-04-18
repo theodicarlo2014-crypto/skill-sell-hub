@@ -15,33 +15,30 @@ const AuthListener = () => {
   const { login, logout, setPage } = useAppStore();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        const meta = session.user.user_metadata;
+    const hydrate = async (session: Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']) => {
+      if (!session?.user) { logout(); return; }
+      const meta = session.user.user_metadata;
+      // Defer profile fetch to avoid deadlocks inside auth callback
+      setTimeout(async () => {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('display_name, role')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
         login({
-          name: meta?.full_name || meta?.name || session.user.email?.split('@')[0] || 'User',
+          name: profile?.display_name || meta?.full_name || meta?.name || session.user.email?.split('@')[0] || 'User',
           email: session.user.email || '',
-          role: (meta?.role as 'buyer' | 'seller') || 'buyer',
+          role: (profile?.role as 'buyer' | 'seller') || 'buyer',
         });
-        if (event === 'SIGNED_IN') {
-          setPage('dashboard');
-        }
-      } else {
-        logout();
-      }
+      }, 0);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      hydrate(session);
+      if (event === 'SIGNED_IN') setPage('dashboard');
     });
 
-    // Check existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        const meta = session.user.user_metadata;
-        login({
-          name: meta?.full_name || meta?.name || session.user.email?.split('@')[0] || 'User',
-          email: session.user.email || '',
-          role: (meta?.role as 'buyer' | 'seller') || 'buyer',
-        });
-      }
-    });
+    supabase.auth.getSession().then(({ data: { session } }) => hydrate(session));
 
     return () => subscription.unsubscribe();
   }, [login, logout, setPage]);
