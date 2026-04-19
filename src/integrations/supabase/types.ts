@@ -120,6 +120,8 @@ export type Database = {
           email: string | null
           id: string
           role: string
+          stripe_account_id: string | null
+          stripe_onboarded: boolean
           updated_at: string
           user_id: string
         }
@@ -130,6 +132,8 @@ export type Database = {
           email?: string | null
           id?: string
           role?: string
+          stripe_account_id?: string | null
+          stripe_onboarded?: boolean
           updated_at?: string
           user_id: string
         }
@@ -140,6 +144,8 @@ export type Database = {
           email?: string | null
           id?: string
           role?: string
+          stripe_account_id?: string | null
+          stripe_onboarded?: boolean
           updated_at?: string
           user_id?: string
         }
