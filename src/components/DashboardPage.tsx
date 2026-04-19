@@ -85,6 +85,8 @@ const DashboardPage = () => {
       const mySales = (sales ?? []).filter(s => myListingIds.has(s.listing_id));
       setSalesCount(mySales.length);
       setEarnings(mySales.reduce((sum, s) => sum + Number(s.amount), 0));
+
+      if (isSeller) refreshConnect();
     })();
   }, [currentUser]);
 
