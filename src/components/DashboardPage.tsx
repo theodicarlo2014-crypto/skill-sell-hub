@@ -116,6 +116,38 @@ const DashboardPage = () => {
         </div>
       </div>
 
+      {isSeller && (
+        <div className="mb-8 bg-surface border border-border rounded-lg p-5">
+          <div className="flex items-start gap-3 flex-wrap">
+            <div className="flex-1 min-w-[220px]">
+              <div className="flex items-center gap-2 mb-1">
+                {connect?.onboarded ? (
+                  <CheckCircle2 size={18} className="text-green" />
+                ) : (
+                  <AlertCircle size={18} className="text-yellow-400" />
+                )}
+                <h3 className="font-display font-semibold">Payouts via Stripe</h3>
+              </div>
+              <p className="text-sm text-text2 leading-relaxed">
+                {connect?.onboarded
+                  ? 'Your Stripe account is connected. Sales pay out directly to your bank.'
+                  : connect?.connected
+                    ? 'Stripe onboarding is incomplete. Finish it to start receiving payments.'
+                    : 'Connect a Stripe account to receive payouts. Buyers cannot purchase your listings until this is done.'}
+              </p>
+            </div>
+            <button
+              onClick={handleConnectStripe}
+              disabled={connecting}
+              className="bg-primary text-primary-foreground px-5 py-2.5 rounded-sm font-medium text-sm hover:bg-accent transition-all disabled:opacity-50 inline-flex items-center gap-1.5"
+            >
+              {connect?.onboarded ? 'Manage Stripe' : connect?.connected ? 'Finish setup' : 'Connect Stripe'}
+              <ExternalLink size={14} />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-surface border border-border rounded-lg p-5">
           <div className="font-display text-3xl font-bold text-accent">{activeCount}</div>
