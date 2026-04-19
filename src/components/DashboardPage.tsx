@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
 
 interface MyListing { id: string; type: string; title: string; price: number; is_active: boolean; }
 interface MyOrder { id: string; total: number; status: string; created_at: string; listing_title?: string; }
+interface ConnectStatus { connected: boolean; onboarded: boolean; }
 
 const DashboardPage = () => {
   const { currentUser, setPage } = useAppStore();
@@ -14,6 +15,29 @@ const DashboardPage = () => {
   const [orders, setOrders] = useState<MyOrder[]>([]);
   const [salesCount, setSalesCount] = useState(0);
   const [earnings, setEarnings] = useState(0);
+  const [connect, setConnect] = useState<ConnectStatus | null>(null);
+  const [connecting, setConnecting] = useState(false);
+
+  const refreshConnect = async () => {
+    if (!isSeller) return;
+    try {
+      const { data } = await supabase.functions.invoke('connect-status');
+      if (data) setConnect({ connected: !!data.connected, onboarded: !!data.onboarded });
+    } catch { /* ignore */ }
+  };
+
+  const handleConnectStripe = async () => {
+    setConnecting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('connect-onboard');
+      if (error) throw error;
+      if (!data?.url) throw new Error('No onboarding URL returned');
+      window.location.href = data.url;
+    } catch (e) {
+      toast.error((e as Error).message || 'Could not start Stripe onboarding');
+      setConnecting(false);
+    }
+  };
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
