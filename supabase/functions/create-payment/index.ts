@@ -26,7 +26,6 @@ serve(async (req) => {
     const { items } = await req.json() as { items: Array<{ listing_id: string }> };
     if (!Array.isArray(items) || items.length === 0) throw new Error("No items");
 
-    // service-role client to read listings & insert orders
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
@@ -41,14 +40,32 @@ serve(async (req) => {
     if (!listings || listings.length !== ids.length) throw new Error("Some listings not found");
     if (listings.some(l => !l.is_active)) throw new Error("Some listings are no longer available");
 
+    // Connect: all items in one checkout must go to the same seller (Stripe limitation for destination charges)
+    const sellerIds = [...new Set(listings.map(l => l.seller_id))];
+    if (sellerIds.length > 1) {
+      throw new Error("Cart contains items from multiple sellers. Please check out one seller at a time.");
+    }
+    const sellerId = sellerIds[0];
+
+    const { data: sellerProfile } = await supabaseAdmin
+      .from("profiles")
+      .select("stripe_account_id, stripe_onboarded")
+      .eq("user_id", sellerId)
+      .maybeSingle();
+
+    if (!sellerProfile?.stripe_account_id || !sellerProfile?.stripe_onboarded) {
+      throw new Error("This seller hasn't completed payment setup yet. Please try again later.");
+    }
+
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") ?? "", { apiVersion: "2025-08-27.basil" });
 
-    // find or create stripe customer
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     const customerId = customers.data[0]?.id;
 
     const subtotal = listings.reduce((s, l) => s + Number(l.price), 0);
     const fee = Math.round(subtotal * 0.15 * 100) / 100;
+    const totalCents = Math.round((subtotal + fee) * 100);
+    const feeCents = Math.round(fee * 100);
 
     const line_items = listings.map(l => ({
       price_data: {
@@ -73,11 +90,14 @@ serve(async (req) => {
       customer_email: customerId ? undefined : user.email,
       line_items,
       mode: "payment",
+      payment_intent_data: {
+        application_fee_amount: feeCents,
+        transfer_data: { destination: sellerProfile.stripe_account_id },
+      },
       success_url: `${origin}/?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/?checkout=cancelled`,
     });
 
-    // create pending orders
     const orderRows = listings.map(l => ({
       buyer_id: user.id,
       listing_id: l.id,

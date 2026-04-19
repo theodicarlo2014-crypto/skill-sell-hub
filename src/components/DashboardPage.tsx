@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react';
 
 interface MyListing { id: string; type: string; title: string; price: number; is_active: boolean; }
 interface MyOrder { id: string; total: number; status: string; created_at: string; listing_title?: string; }
+interface ConnectStatus { connected: boolean; onboarded: boolean; }
 
 const DashboardPage = () => {
   const { currentUser, setPage } = useAppStore();
@@ -14,6 +15,29 @@ const DashboardPage = () => {
   const [orders, setOrders] = useState<MyOrder[]>([]);
   const [salesCount, setSalesCount] = useState(0);
   const [earnings, setEarnings] = useState(0);
+  const [connect, setConnect] = useState<ConnectStatus | null>(null);
+  const [connecting, setConnecting] = useState(false);
+
+  const refreshConnect = async () => {
+    if (!isSeller) return;
+    try {
+      const { data } = await supabase.functions.invoke('connect-status');
+      if (data) setConnect({ connected: !!data.connected, onboarded: !!data.onboarded });
+    } catch { /* ignore */ }
+  };
+
+  const handleConnectStripe = async () => {
+    setConnecting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('connect-onboard');
+      if (error) throw error;
+      if (!data?.url) throw new Error('No onboarding URL returned');
+      window.location.href = data.url;
+    } catch (e) {
+      toast.error((e as Error).message || 'Could not start Stripe onboarding');
+      setConnecting(false);
+    }
+  };
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -61,6 +85,8 @@ const DashboardPage = () => {
       const mySales = (sales ?? []).filter(s => myListingIds.has(s.listing_id));
       setSalesCount(mySales.length);
       setEarnings(mySales.reduce((sum, s) => sum + Number(s.amount), 0));
+
+      if (isSeller) refreshConnect();
     })();
   }, [currentUser]);
 
@@ -89,6 +115,38 @@ const DashboardPage = () => {
           {isSeller ? 'Seller account' : 'Buyer account'}
         </div>
       </div>
+
+      {isSeller && (
+        <div className="mb-8 bg-surface border border-border rounded-lg p-5">
+          <div className="flex items-start gap-3 flex-wrap">
+            <div className="flex-1 min-w-[220px]">
+              <div className="flex items-center gap-2 mb-1">
+                {connect?.onboarded ? (
+                  <CheckCircle2 size={18} className="text-green" />
+                ) : (
+                  <AlertCircle size={18} className="text-yellow-400" />
+                )}
+                <h3 className="font-display font-semibold">Payouts via Stripe</h3>
+              </div>
+              <p className="text-sm text-text2 leading-relaxed">
+                {connect?.onboarded
+                  ? 'Your Stripe account is connected. Sales pay out directly to your bank.'
+                  : connect?.connected
+                    ? 'Stripe onboarding is incomplete. Finish it to start receiving payments.'
+                    : 'Connect a Stripe account to receive payouts. Buyers cannot purchase your listings until this is done.'}
+              </p>
+            </div>
+            <button
+              onClick={handleConnectStripe}
+              disabled={connecting}
+              className="bg-primary text-primary-foreground px-5 py-2.5 rounded-sm font-medium text-sm hover:bg-accent transition-all disabled:opacity-50 inline-flex items-center gap-1.5"
+            >
+              {connect?.onboarded ? 'Manage Stripe' : connect?.connected ? 'Finish setup' : 'Connect Stripe'}
+              <ExternalLink size={14} />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-surface border border-border rounded-lg p-5">
