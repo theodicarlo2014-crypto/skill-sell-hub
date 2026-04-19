@@ -38,6 +38,17 @@ const Index = () => {
       window.history.replaceState({}, '', '/');
       setPage('cart');
     }
+
+    const connect = params.get('connect');
+    if (connect === 'return') {
+      toast.success('Stripe onboarding complete — refreshing status…');
+      window.history.replaceState({}, '', '/');
+      setPage('dashboard');
+    } else if (connect === 'refresh') {
+      toast('Stripe onboarding link expired. Please try again.');
+      window.history.replaceState({}, '', '/');
+      setPage('dashboard');
+    }
   }, [setPage, clearCart]);
 
   return (
